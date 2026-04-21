@@ -2,9 +2,44 @@
   margin-bottom: 8rem;
 }
 
+.daily-highlight {
+  margin-bottom: 4rem;
+  padding: 2.5rem;
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+
+.highlight-badge {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.highlight-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.highlight-icon {
+  font-size: 4rem;
+}
+
+.highlight-content h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
 .tips-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
 }
 
@@ -14,15 +49,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   transition: var(--transition);
 }
 
 .tip-card:hover {
   transform: translateY(-8px);
-  border-color: var(--secondary);
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .tip-tag {
@@ -30,12 +64,17 @@
   top: 1rem;
   right: 1rem;
   background: rgba(255, 255, 255, 0.05);
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 1rem;
   border-radius: 100px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
 }
+
+.tip-tag[data-category="hydration"] { color: #60a5fa; border: 1px solid #60a5fa44; }
+.tip-tag[data-category="nutrition"] { color: #34d399; border: 1px solid #34d39944; }
+.tip-tag[data-category="wellness"] { color: #f472b6; border: 1px solid #f472b644; }
+.tip-tag[data-category="habit"] { color: #fbbf24; border: 1px solid #fbbf2444; }
 
 .tip-icon {
   font-size: 3rem;
@@ -47,8 +86,50 @@
   margin-bottom: 1rem;
 }
 
-.tip-content {
+.tip-content p {
   color: var(--text-muted);
   font-size: 1rem;
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.tip-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-pill {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+  border: 1px solid var(--surface-border);
+}
+
+.tip-reference {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .highlight-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
 }
