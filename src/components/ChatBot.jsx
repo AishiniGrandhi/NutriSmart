@@ -33,6 +33,8 @@ const ChatBot = () => {
         botResponse = "For weight loss, I recommend a high-protein, high-fiber diet to keep you full longer. Check out our 'Weight Loss' plan in the Diets section!";
       } else if (lowerInput.includes('burger')) {
         botResponse = "A burger can be made healthier! Swap the soda for water and add a side salad instead of fries. I can also suggest healthier alternatives in the Analyzer!";
+      } else if (lowerInput.includes('diet plan') || lowerInput.includes('diets') || (lowerInput.includes('yes') && messages[messages.length-1].text.includes('diet plans'))) {
+        botResponse = "Our diet plans are categorized by goals: High Protein, Weight Loss, Balanced, and Vegetarian. You can explore them all in the 'Diets' tab in the navigation bar!";
       } else if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
         botResponse = "Hello! How can I help you reach your health goals today?";
       }
