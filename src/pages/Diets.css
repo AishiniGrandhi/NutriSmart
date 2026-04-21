@@ -16,6 +16,18 @@
   flex-direction: column;
   gap: 1.2rem;
   transition: var(--transition);
+  position: relative;
+}
+
+.verification-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  align-self: flex-start;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .diet-card:hover {
@@ -53,10 +65,30 @@
 .meal-item {
   font-size: 0.95rem;
   color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.meal-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--surface-border);
 }
 
 .meal-item span {
   font-weight: 700;
   color: var(--primary);
   margin-right: 0.5rem;
+}
+
+.bis-footer {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+  text-align: right;
+  font-family: monospace;
 }

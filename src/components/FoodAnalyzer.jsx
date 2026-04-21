@@ -73,8 +73,8 @@ const FoodAnalyzer = () => {
         gutHealth: { level: "Good", icon: "🦠", explanation: "High fiber content supports a healthy gut microbiome." },
         boost: "Add some berries or curd to further enhance gut health!",
         nearbyStores: [
-          { name: "Organic Brown Bread", price: "₹55", benefit: "High Fiber", alternativeTo: "White Bread" },
-          { name: "Farm Fresh Eggs", price: "₹6/pc", benefit: "Lean Protein", alternativeTo: "Processed Sausages" }
+          { name: "Organic Brown Bread", price: "₹55", benefit: "High Fiber", alternativeTo: "White Bread", locationName: "Reliance Fresh" },
+          { name: "Farm Fresh Eggs", price: "₹6/pc", benefit: "Lean Protein", alternativeTo: "Processed Sausages", locationName: "Big Bazaar" }
         ],
         realImage,
         date: new Date().toLocaleString()
@@ -93,10 +93,28 @@ const FoodAnalyzer = () => {
           gutHealth: { level: "Poor", icon: "🦠", explanation: "Low fiber may negatively affect digestion and gut health." },
           boost: "Add a side salad or replace soda with water to improve this meal.",
           nearbyStores: [
-            { name: "Fresh Garden Salad", price: "₹120", benefit: "Rich in Fiber", alternativeTo: "Regular Fries" },
-            { name: "Grilled Chicken Strip", price: "₹180", benefit: "Low Fat Protein", alternativeTo: "Fried Patty" }
+            { name: "Fresh Garden Salad", price: "₹120", benefit: "Rich in Fiber", alternativeTo: "Regular Fries", locationName: "Nature's Basket" },
+            { name: "Grilled Chicken Strip", price: "₹180", benefit: "Low Fat Protein", alternativeTo: "Fried Patty", locationName: "Star Bazaar" }
           ],
           calories: 850
+        };
+      } else if (isModerate) {
+        foodData = {
+          ...foodData,
+          healthScore: 65,
+          status: "Moderate",
+          statusColor: "#f59e0b",
+          explanation: "Good balance of energy, but can be high in starch or oils depending on preparation.",
+          recommendation: "Consume occasionally",
+          tags: ["Natural", "Moderate Energy"],
+          antioxidant: { level: "Medium", icon: "🫐", explanation: "Contains essential nutrients but lacks dense antioxidants." },
+          gutHealth: { level: "Neutral", icon: "🦠", explanation: "Balanced fiber, but may lack probiotic diversity." },
+          boost: "Pair with a serving of curd/yogurt to improve gut health!",
+          nearbyStores: [
+            { name: "Brown Rice (1kg)", price: "₹110", benefit: "Slow Release Energy", alternativeTo: "White Rice", locationName: "D-Mart" },
+            { name: "Greek Yogurt", price: "₹45", benefit: "Probiotics", alternativeTo: "Sweetened Curd", locationName: "Nature's Basket" }
+          ],
+          calories: 600
         };
       }
 
@@ -172,12 +190,12 @@ const FoodAnalyzer = () => {
 
             <div className="analysis-grid">
               <div className="analysis-box glass highlight">
-                <h4>Boost Your Meal 🚀</h4>
+                <h4>Boost Your Meal 🚀 <span className="who-tag">WHO Recommended</span></h4>
                 <p>{result.boost}</p>
               </div>
               
               <div className="analysis-box glass">
-                <h4>Nearby Alternatives 🛒</h4>
+                <h4>Nearby Alternatives 🛒 <span className="bis-tag">BIS Quality</span></h4>
                 <div className="store-grid">
                   {result.nearbyStores.map((item, i) => <StoreCard key={i} item={item} />)}
                 </div>
