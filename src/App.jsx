@@ -1,31 +1,26 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Dashboard from './components/Dashboard';
-import FoodAnalyzer from './components/FoodAnalyzer';
-import HealthTips from './components/HealthTips';
+import Home from './pages/Home';
+import Analyze from './pages/Analyze';
+import Tips from './pages/Tips';
+import History from './pages/History';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
   return (
-    <Layout>
-      <div className="hero container">
-        <div className="hero-content">
-          <h1 className="hero-title">Smart Nutrition for a <span className="gradient-text">Healthier You</span></h1>
-          <p className="hero-subtitle">
-            Powered by Gemini AI, NutriSmart analyzes your meals and provides 
-            personalized insights to reach your health goals faster.
-          </p>
-          <div className="hero-cta">
-            <a href="#analyze" className="btn-primary">Analyze Your First Meal</a>
-            <button className="btn-secondary">Learn More</button>
-          </div>
-        </div>
-      </div>
-      
-      <Dashboard />
-      <FoodAnalyzer />
-      <HealthTips />
-    </Layout>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/analyze" element={<Analyze />} />
+          <Route path="/tips" element={<Tips />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 

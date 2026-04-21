@@ -1,21 +1,31 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === path ? 'active' : '';
+  };
+
   return (
     <header className="header glass">
       <div className="container header-content">
-        <div className="logo">
+        <Link to="/" className="logo">
           <span className="logo-icon">🥗</span>
           <span className="logo-text">NutriSmart</span>
-        </div>
+        </Link>
         <nav className="nav" aria-label="Main Navigation">
-          <a href="#dashboard" className="nav-link" aria-label="Go to Dashboard">Dashboard</a>
-          <a href="#analyze" className="nav-link" aria-label="Go to Food Analyzer">Analyze Food</a>
-          <a href="#tips" className="nav-link" aria-label="Go to Health Tips">Health Tips</a>
+          <Link to="/" className={`nav-link ${isActive('/')}`} aria-label="Go to Dashboard">Home</Link>
+          <Link to="/analyze" className={`nav-link ${isActive('/analyze')}`} aria-label="Go to Food Analyzer">Analyze</Link>
+          <Link to="/history" className={`nav-link ${isActive('/history')}`} aria-label="Go to Meal Log">History</Link>
+          <Link to="/tips" className={`nav-link ${isActive('/tips')}`} aria-label="Go to Health Tips">Tips</Link>
         </nav>
         <div className="header-actions">
-          <button className="btn-primary" aria-label="Connect to Gemini API">Connect API</button>
+          <Link to="/profile" className="profile-link" aria-label="Go to Profile">
+            <span className="profile-icon">👤</span>
+          </Link>
         </div>
       </div>
     </header>

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 import './FoodAnalyzer.css';
 
 const FoodAnalyzer = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
   const [image, setImage] = useState(null);
+  const [history, setHistory] = useLocalStorage('nutrismart-history', []);
+  const [isLogged, setIsLogged] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -25,15 +28,25 @@ const FoodAnalyzer = () => {
     // Simulate API call to Gemini
     setTimeout(() => {
       setIsAnalyzing(false);
+      setIsLogged(false);
       setResult({
+        id: Date.now(),
         name: "Avocado Toast with Poached Egg",
         calories: 450,
         macros: { protein: "18g", carbs: "32g", fats: "28g" },
         healthScore: 85,
         insights: "High in healthy monounsaturated fats and fiber. Good source of protein from the egg.",
-        recommendation: "Consider adding some red pepper flakes for a metabolism boost!"
+        recommendation: "Consider adding some red pepper flakes for a metabolism boost!",
+        date: new Date().toLocaleDateString()
       });
     }, 2500);
+  };
+
+  const handleLogMeal = () => {
+    if (result) {
+      setHistory([result, ...history]);
+      setIsLogged(true);
+    }
   };
 
   return (
@@ -107,13 +120,23 @@ const FoodAnalyzer = () => {
               </div>
             </div>
 
-            <button 
-              className="btn-primary" 
-              onClick={() => setImage(null) || setResult(null)}
-              aria-label="Analyze another food item"
-            >
-              Analyze Another
-            </button>
+            <div className="result-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <button 
+                className="btn-primary" 
+                onClick={handleLogMeal}
+                disabled={isLogged}
+                aria-label="Log this meal to history"
+              >
+                {isLogged ? '✓ Logged' : 'Log Meal'}
+              </button>
+              <button 
+                className="btn-secondary" 
+                onClick={() => setImage(null) || setResult(null)}
+                aria-label="Analyze another food item"
+              >
+                Analyze Another
+              </button>
+            </div>
           </div>
         )}
       </div>

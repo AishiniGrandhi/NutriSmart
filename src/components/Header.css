@@ -41,7 +41,7 @@
   position: relative;
 }
 
-.nav-link:hover {
+.nav-link:hover, .nav-link.active {
   color: var(--primary);
 }
 
@@ -56,8 +56,25 @@
   transition: var(--transition);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after, .nav-link.active::after {
   width: 100%;
+}
+
+.profile-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  font-size: 1.2rem;
+  border: 1px solid var(--surface-border);
+}
+
+.profile-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
