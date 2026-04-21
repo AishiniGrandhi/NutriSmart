@@ -1,0 +1,54 @@
+.tips {
+  margin-bottom: 8rem;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tip-card {
+  padding: 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.tip-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--secondary);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.tip-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.tip-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.tip-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tip-content {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
