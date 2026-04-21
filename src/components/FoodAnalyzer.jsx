@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
+import StoreCard from './StoreCard';
 import './FoodAnalyzer.css';
 
 const FoodAnalyzer = () => {
@@ -45,6 +46,10 @@ const FoodAnalyzer = () => {
         recommendation: "Good for regular consumption",
         improvements: ["Add some red pepper flakes for metabolism"],
         combinations: ["Pair with green tea", "Add a side of seasonal fruits"],
+        nearbyStores: [
+          { name: "Organic Brown Bread", price: "₹55", benefit: "High Fiber", alternativeTo: "White Bread" },
+          { name: "Farm Fresh Eggs", price: "₹6/pc", benefit: "Lean Protein", alternativeTo: "Processed Sausages" }
+        ],
         date: new Date().toLocaleString()
       };
 
@@ -58,6 +63,10 @@ const FoodAnalyzer = () => {
           recommendation: "Avoid frequent intake",
           improvements: ["Replace the soda with water", "Add a fresh garden salad to increase fiber"],
           combinations: ["Avoid fries; choose baked wedges instead", "Skip the extra cheese"],
+          nearbyStores: [
+            { name: "Fresh Garden Salad", price: "₹120", benefit: "Rich in Fiber", alternativeTo: "Regular Fries" },
+            { name: "Grilled Chicken Strip", price: "₹180", benefit: "Low Fat Protein", alternativeTo: "Fried Patty" }
+          ],
           calories: 850
         };
       } else if (isModerate) {
@@ -70,6 +79,10 @@ const FoodAnalyzer = () => {
           recommendation: "Consume occasionally",
           improvements: ["Increase protein (add dal, egg, or grilled chicken)", "Add more leafy vegetables"],
           combinations: ["Pair with a serving of curd/yogurt", "Use brown rice instead of white rice"],
+          nearbyStores: [
+            { name: "Brown Rice (1kg)", price: "₹110", benefit: "Slow Release Energy", alternativeTo: "White Rice" },
+            { name: "Greek Yogurt", price: "₹45", benefit: "Probiotics", alternativeTo: "Sweetened Curd" }
+          ],
           calories: 600
         };
       }
@@ -160,6 +173,13 @@ const FoodAnalyzer = () => {
                 <ul className="action-list">
                   {result.combinations.map((comb, i) => <li key={i}>{comb}</li>)}
                 </ul>
+              </div>
+
+              <div className="analysis-box glass highlight">
+                <h4>Where to get healthier alternatives</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                  {result.nearbyStores.map((item, i) => <StoreCard key={i} item={item} />)}
+                </div>
               </div>
             </div>
 

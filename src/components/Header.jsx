@@ -21,9 +21,9 @@ const Header = () => {
         <nav className="nav" aria-label="Main Navigation">
           <Link to="/" className={`nav-link ${isActive('/')}`} aria-label="Go to Dashboard">Home</Link>
           <Link to="/analyze" className={`nav-link ${isActive('/analyze')}`} aria-label="Go to Food Analyzer">Analyze</Link>
+          <Link to="/diets" className={`nav-link ${isActive('/diets')}`} aria-label="Go to Diet Plans">Diets</Link>
           <Link to="/kids" className={`nav-link ${isActive('/kids')}`} aria-label="Go to Kids Health Zone">Kids</Link>
           <Link to="/history" className={`nav-link ${isActive('/history')}`} aria-label="Go to Meal Log">History</Link>
-          <Link to="/tips" className={`nav-link ${isActive('/tips')}`} aria-label="Go to Health Tips">Tips</Link>
         </nav>
         <div className="header-actions">
           {user ? (

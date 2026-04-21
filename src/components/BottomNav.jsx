@@ -13,13 +13,13 @@ const BottomNav = () => {
         <span className="icon">🔍</span>
         <span className="label">Analyze</span>
       </NavLink>
+      <NavLink to="/diets" className={({ isActive }) => `bottom-nav-link ${isActive ? 'active' : ''}`}>
+        <span className="icon">🥗</span>
+        <span className="label">Diets</span>
+      </NavLink>
       <NavLink to="/kids" className={({ isActive }) => `bottom-nav-link ${isActive ? 'active' : ''}`}>
         <span className="icon">👶</span>
         <span className="label">Kids</span>
-      </NavLink>
-      <NavLink to="/history" className={({ isActive }) => `bottom-nav-link ${isActive ? 'active' : ''}`}>
-        <span className="icon">📋</span>
-        <span className="label">History</span>
       </NavLink>
     </nav>
   );

@@ -7,7 +7,9 @@ import Tips from './pages/Tips';
 import History from './pages/History';
 import Profile from './pages/Profile';
 import KidsHealth from './pages/KidsHealth';
+import Diets from './pages/Diets';
 import Login from './pages/Login';
+import ChatBot from './components/ChatBot';
 import { useAuth } from './components/AuthContext';
 import './App.css';
 
@@ -29,9 +31,11 @@ function App() {
           <Route path="/analyze" element={<ProtectedRoute><Analyze /></ProtectedRoute>} />
           <Route path="/tips" element={<Tips />} />
           <Route path="/kids" element={<KidsHealth />} />
+          <Route path="/diets" element={<Diets />} />
           <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
+        <ChatBot />
       </Layout>
     </Router>
   );
