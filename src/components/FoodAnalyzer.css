@@ -261,3 +261,91 @@
     padding: 1.5rem;
   }
 }
+
+.v3-badge {
+  background: linear-gradient(135deg, #f43f5e, #fbbf24);
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--surface-border);
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.insight-card {
+  padding: 1.5rem;
+  border-radius: 20px;
+  text-align: left;
+}
+
+.insight-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.insight-icon {
+  font-size: 2rem;
+}
+
+.insight-title-group h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.level-indicator {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.level-indicator.high, .level-indicator.good { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.level-indicator.medium, .level-indicator.neutral { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.level-indicator.low, .level-indicator.poor { color: #f43f5e; background: rgba(244, 63, 94, 0.1); }
+
+.store-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

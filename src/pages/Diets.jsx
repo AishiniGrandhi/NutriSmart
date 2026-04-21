@@ -62,6 +62,28 @@ const Diets = () => {
         lunch: "Paneer/Tofu tikka with brown rice",
         dinner: "Sweet potato & black bean tacos"
       }
+    },
+    {
+      title: "Gut Health",
+      icon: "🦠",
+      suitable: "Digestion & microbiome balance",
+      focus: "Probiotics & Prebiotic fiber",
+      meals: {
+        breakfast: "Greek yogurt with flaxseeds & honey",
+        lunch: "Kombucha bowl with quinoa & fermented slaw",
+        dinner: "Miso-glazed tempeh with kimchi"
+      }
+    },
+    {
+      title: "Antioxidant-Rich",
+      icon: "🫐",
+      suitable: "Detox & anti-aging",
+      focus: "Polyphenols & Vitamins A, C, E",
+      meals: {
+        breakfast: "Acai bowl with blueberries & chia",
+        lunch: "Spinach & pomegranate salad with nuts",
+        dinner: "Turmeric-roasted cauliflower with salmon"
+      }
     }
   ];
 

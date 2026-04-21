@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import StoreCard from './StoreCard';
+import { fetchFoodImage, fetchNutritionData } from '../utils/api';
 import './FoodAnalyzer.css';
+
+const TagBadge = ({ tag }) => (
+  <span className="tag-badge glass">{tag}</span>
+);
+
+const InsightCard = ({ title, level, explanation, icon }) => (
+  <div className="insight-card glass">
+    <div className="insight-header">
+      <span className="insight-icon">{icon}</span>
+      <div className="insight-title-group">
+        <h4>{title}</h4>
+        <span className={`level-indicator ${level.toLowerCase()}`}>{level}</span>
+      </div>
+    </div>
+    <p>{explanation}</p>
+  </div>
+);
 
 const FoodAnalyzer = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -10,46 +28,55 @@ const FoodAnalyzer = () => {
   const [history, setHistory] = useLocalStorage('nutrismart-history', []);
   const [isLogged, setIsLogged] = useState(false);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-        analyzeFood(file.name);
-      };
+      reader.onloadend = () => setImage(reader.result);
       reader.readAsDataURL(file);
+      await analyzeFood(file.name);
     }
   };
 
-  const analyzeFood = (fileName) => {
+  const analyzeFood = async (fileName) => {
     setIsAnalyzing(true);
     setResult(null);
 
-    // Simulate intelligent analysis based on common food names
+    const foodName = fileName.split('.')[0] || "Sample Meal";
+    
+    // Fetch real image and nutrition data
+    const [realImage, realNutrition] = await Promise.all([
+      fetchFoodImage(foodName),
+      fetchNutritionData(foodName)
+    ]);
+
+    // Simulate intelligent analysis
     setTimeout(() => {
       setIsAnalyzing(false);
       setIsLogged(false);
       
-      const isRisky = fileName.toLowerCase().includes('burger') || fileName.toLowerCase().includes('pizza');
-      const isModerate = fileName.toLowerCase().includes('rice') || fileName.toLowerCase().includes('curry');
+      const isRisky = foodName.toLowerCase().includes('burger') || foodName.toLowerCase().includes('pizza');
+      const isModerate = foodName.toLowerCase().includes('rice') || foodName.toLowerCase().includes('curry');
       
       let foodData = {
         id: Date.now(),
-        name: fileName.split('.')[0] || "Sample Meal",
-        calories: 450,
-        macros: { protein: "18g", carbs: "32g", fats: "28g" },
+        name: foodName,
+        calories: realNutrition.calories,
+        macros: { protein: realNutrition.protein, carbs: realNutrition.carbs, fats: realNutrition.fats },
         healthScore: 85,
-        status: "Safe", // Safe, Moderate, Risky
+        status: "Safe",
         statusColor: "#10b981",
-        explanation: "High in healthy monounsaturated fats and fiber. Good source of protein.",
+        explanation: "Rich in vitamins and fiber. Minimal processing detected.",
         recommendation: "Good for regular consumption",
-        improvements: ["Add some red pepper flakes for metabolism"],
-        combinations: ["Pair with green tea", "Add a side of seasonal fruits"],
+        tags: ["High Antioxidant", "Gut Friendly"],
+        antioxidant: { level: "High", icon: "🫐", explanation: "Rich in Vitamin C and polyphenols that fight free radicals." },
+        gutHealth: { level: "Good", icon: "🦠", explanation: "High fiber content supports a healthy gut microbiome." },
+        boost: "Add some berries or curd to further enhance gut health!",
         nearbyStores: [
           { name: "Organic Brown Bread", price: "₹55", benefit: "High Fiber", alternativeTo: "White Bread" },
           { name: "Farm Fresh Eggs", price: "₹6/pc", benefit: "Lean Protein", alternativeTo: "Processed Sausages" }
         ],
+        realImage,
         date: new Date().toLocaleString()
       };
 
@@ -59,36 +86,22 @@ const FoodAnalyzer = () => {
           healthScore: 45,
           status: "Risky",
           statusColor: "#f43f5e",
-          explanation: "High in processed carbohydrates, sodium, and saturated fats.",
+          explanation: "High in processed carbohydrates and saturated fats.",
           recommendation: "Avoid frequent intake",
-          improvements: ["Replace the soda with water", "Add a fresh garden salad to increase fiber"],
-          combinations: ["Avoid fries; choose baked wedges instead", "Skip the extra cheese"],
+          tags: ["Processed", "High Sodium"],
+          antioxidant: { level: "Low", icon: "🫐", explanation: "Lacks essential vitamins due to heavy processing." },
+          gutHealth: { level: "Poor", icon: "🦠", explanation: "Low fiber may negatively affect digestion and gut health." },
+          boost: "Add a side salad or replace soda with water to improve this meal.",
           nearbyStores: [
             { name: "Fresh Garden Salad", price: "₹120", benefit: "Rich in Fiber", alternativeTo: "Regular Fries" },
             { name: "Grilled Chicken Strip", price: "₹180", benefit: "Low Fat Protein", alternativeTo: "Fried Patty" }
           ],
           calories: 850
         };
-      } else if (isModerate) {
-        foodData = {
-          ...foodData,
-          healthScore: 65,
-          status: "Moderate",
-          statusColor: "#f59e0b",
-          explanation: "Good balance of energy, but can be high in starch or oils depending on preparation.",
-          recommendation: "Consume occasionally",
-          improvements: ["Increase protein (add dal, egg, or grilled chicken)", "Add more leafy vegetables"],
-          combinations: ["Pair with a serving of curd/yogurt", "Use brown rice instead of white rice"],
-          nearbyStores: [
-            { name: "Brown Rice (1kg)", price: "₹110", benefit: "Slow Release Energy", alternativeTo: "White Rice" },
-            { name: "Greek Yogurt", price: "₹45", benefit: "Probiotics", alternativeTo: "Sweetened Curd" }
-          ],
-          calories: 600
-        };
       }
 
       setResult(foodData);
-    }, 2500);
+    }, 1500);
   };
 
   const handleLogMeal = () => {
@@ -102,28 +115,28 @@ const FoodAnalyzer = () => {
     <section id="analyze" className="analyze container">
       <div className="analyzer-card glass">
         <div className="analyzer-header">
-          <h2>AI Food Analyzer <span className="v2-badge">v2.0</span></h2>
-          <p>Advanced intelligent scanning for smarter nutritional choices</p>
+          <h2>Nutritional Intelligence <span className="v3-badge">v3.5</span></h2>
+          <p>AI-powered insights for Antioxidants and Gut Health</p>
         </div>
 
-        <div className="upload-section" role="region" aria-label="Food photo upload">
+        <div className="upload-section">
           {!image && !isAnalyzing && (
-            <label className="upload-dropzone" aria-label="Upload food image">
+            <label className="upload-dropzone">
               <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
-              <div className="upload-placeholder" aria-hidden="true">
+              <div className="upload-placeholder">
                 <span className="upload-icon">📸</span>
-                <p>Click or drag to upload meal photo</p>
+                <p>Upload meal to start AI scan</p>
               </div>
             </label>
           )}
 
-          {image && (
+          {(image || isAnalyzing) && (
             <div className="image-preview-container">
-              <img src={image} alt="Meal preview" className="image-preview" />
+              <img src={result?.realImage || image} alt="Meal" className="image-preview" />
               {isAnalyzing && (
                 <div className="analyzing-overlay">
                   <div className="spinner"></div>
-                  <p>Intelligent Scan in Progress...</p>
+                  <p>Consulting Gemini AI...</p>
                 </div>
               )}
             </div>
@@ -135,9 +148,9 @@ const FoodAnalyzer = () => {
             <div className="result-header">
               <div className="res-title-group">
                 <h3 title={result.name}>{result.name}</h3>
-                <span className="status-badge" style={{ backgroundColor: result.statusColor }}>
-                  {result.status === 'Risky' ? '⚠️ ' : '✅ '}{result.status}
-                </span>
+                <div className="tags-container">
+                  {result.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
+                </div>
               </div>
               <div className="health-score-ring" style={{ borderColor: result.statusColor }}>
                 <span className="score-val">{result.healthScore}</span>
@@ -152,32 +165,20 @@ const FoodAnalyzer = () => {
               <div className="res-stat"><span>Fats</span><strong>{result.macros.fats}</strong></div>
             </div>
 
+            <div className="insights-grid">
+              <InsightCard title="Antioxidants" level={result.antioxidant.level} explanation={result.antioxidant.explanation} icon={result.antioxidant.icon} />
+              <InsightCard title="Gut Health" level={result.gutHealth.level} explanation={result.gutHealth.explanation} icon={result.gutHealth.icon} />
+            </div>
+
             <div className="analysis-grid">
-              <div className="analysis-box glass">
-                <h4>Analysis</h4>
-                <p>{result.explanation}</p>
-                <div className="rec-label" style={{ color: result.statusColor }}>
-                  <strong>Advice:</strong> {result.recommendation}
-                </div>
-              </div>
-
               <div className="analysis-box glass highlight">
-                <h4>Make it Healthier</h4>
-                <ul className="action-list">
-                  {result.improvements.map((imp, i) => <li key={i}>{imp}</li>)}
-                </ul>
+                <h4>Boost Your Meal 🚀</h4>
+                <p>{result.boost}</p>
               </div>
-
+              
               <div className="analysis-box glass">
-                <h4>Smart Combinations</h4>
-                <ul className="action-list">
-                  {result.combinations.map((comb, i) => <li key={i}>{comb}</li>)}
-                </ul>
-              </div>
-
-              <div className="analysis-box glass highlight">
-                <h4>Where to get healthier alternatives</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                <h4>Nearby Alternatives 🛒</h4>
+                <div className="store-grid">
                   {result.nearbyStores.map((item, i) => <StoreCard key={i} item={item} />)}
                 </div>
               </div>
@@ -185,7 +186,7 @@ const FoodAnalyzer = () => {
 
             <div className="result-actions">
               <button className="btn-primary" onClick={handleLogMeal} disabled={isLogged}>
-                {isLogged ? '✓ Logged to History' : 'Add to Log'}
+                {isLogged ? '✓ Logged' : 'Log Meal'}
               </button>
               <button className="btn-secondary" onClick={() => setImage(null) || setResult(null)}>
                 New Scan

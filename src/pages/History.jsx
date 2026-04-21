@@ -62,33 +62,40 @@ const History = () => {
               alignItems: 'center',
               padding: '1.5rem 2rem',
               marginBottom: '1rem',
-              borderRadius: '20px',
-              borderLeft: `5px solid ${item.statusColor}`
+              borderRadius: '24px',
+              borderLeft: `6px solid ${item.statusColor}`,
+              overflow: 'hidden'
             }}>
-              <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: '800' }}>{item.healthScore}</div>
-                  <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', opacity: 0.7 }}>Score</div>
+              <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flex: 1, minWidth: 0 }}>
+                <div className="health-score-mini" style={{ 
+                  width: '50px', height: '50px', borderRadius: '50%', border: `3px solid ${item.statusColor}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800'
+                }}>
+                  {item.healthScore}
                 </div>
-                <div>
-                  <h4 style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>{item.name}</h4>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <h4 style={{ 
+                    fontSize: '1.1rem', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' 
+                  }} title={item.name}>
+                    {item.name}
+                  </h4>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                     {item.date} • {item.calories} kcal
                   </div>
                 </div>
               </div>
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: 'right', marginLeft: '2rem' }}>
                 <span style={{ 
                   backgroundColor: `${item.statusColor}22`, 
                   color: item.statusColor,
                   padding: '0.3rem 0.8rem',
                   borderRadius: '100px',
-                  fontSize: '0.8rem',
+                  fontSize: '0.75rem',
                   fontWeight: '700'
                 }}>
                   {item.status}
                 </span>
-                <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)', maxWidth: '200px' }}>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', maxWidth: '180px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {item.recommendation}
                 </div>
               </div>
