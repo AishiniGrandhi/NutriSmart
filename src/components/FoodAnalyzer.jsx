@@ -134,7 +134,7 @@ const FoodAnalyzer = () => {
           <div className="result-section fade-in">
             <div className="result-header">
               <div className="res-title-group">
-                <h3>{result.name}</h3>
+                <h3 title={result.name}>{result.name}</h3>
                 <span className="status-badge" style={{ backgroundColor: result.statusColor }}>
                   {result.status === 'Risky' ? '⚠️ ' : '✅ '}{result.status}
                 </span>
