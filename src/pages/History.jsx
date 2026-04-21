@@ -1,35 +1,96 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 const History = () => {
   const [history] = useLocalStorage('nutrismart-history', []);
+  const [filter, setFilter] = useState('All');
+
+  const filteredHistory = useMemo(() => {
+    if (filter === 'All') return history;
+    return history.filter(item => item.status === filter);
+  }, [history, filter]);
+
+  const stats = useMemo(() => {
+    const total = history.length;
+    const safe = history.filter(i => i.status === 'Safe').length;
+    const risky = history.filter(i => i.status === 'Risky').length;
+    return { total, safe, risky };
+  }, [history]);
 
   return (
     <div className="history-page container" style={{ padding: '4rem 0' }}>
-      <h2 className="section-title">Meal History</h2>
-      <p className="section-subtitle">A log of your previous AI food analyses</p>
+      <div className="section-header">
+        <h2 className="section-title">Meal Analytics Log</h2>
+        <p className="section-subtitle">Comprehensive tracking of your nutritional journey</p>
+      </div>
+
+      <div className="history-stats-bar glass" style={{ display: 'flex', gap: '2rem', padding: '1.5rem', marginBottom: '2rem', borderRadius: '16px' }}>
+        <div className="h-stat"><span>Total Meals</span><strong>{stats.total}</strong></div>
+        <div className="h-stat"><span style={{ color: '#10b981' }}>Safe Choices</span><strong>{stats.safe}</strong></div>
+        <div className="h-stat"><span style={{ color: '#f43f5e' }}>Risky Items</span><strong>{stats.risky}</strong></div>
+      </div>
+
+      <div className="filter-bar" style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        {['All', 'Safe', 'Moderate', 'Risky'].map(f => (
+          <button 
+            key={f} 
+            onClick={() => setFilter(f)}
+            className={`glass ${filter === f ? 'active-filter' : ''}`}
+            style={{ 
+              padding: '0.5rem 1.5rem', 
+              borderRadius: '100px', 
+              border: filter === f ? '1px solid var(--primary)' : '1px solid var(--surface-border)',
+              background: filter === f ? 'rgba(99, 102, 241, 0.1)' : 'none',
+              color: filter === f ? 'var(--primary)' : 'var(--text-muted)'
+            }}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
       
-      <div className="history-list glass" style={{ marginTop: '2rem', padding: '2rem' }}>
-        {history.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-            No meals logged yet. Start by analyzing a meal!
+      <div className="history-list">
+        {filteredHistory.length === 0 ? (
+          <div className="glass" style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-muted)' }}>
+            No meals found for this category.
           </div>
         ) : (
-          history.map((item, index) => (
-            <div key={item.id || index} className="history-item" style={{ 
+          filteredHistory.map((item) => (
+            <div key={item.id} className="history-item glass fade-in" style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
               alignItems: 'center',
-              padding: '1.5rem 0',
-              borderBottom: index !== history.length - 1 ? '1px solid var(--surface-border)' : 'none'
+              padding: '1.5rem 2rem',
+              marginBottom: '1rem',
+              borderRadius: '20px',
+              borderLeft: `5px solid ${item.statusColor}`
             }}>
-              <div>
-                <h4 style={{ fontSize: '1.2rem' }}>{item.name}</h4>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{item.date}</span>
+              <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: '800' }}>{item.healthScore}</div>
+                  <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', opacity: 0.7 }}>Score</div>
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>{item.name}</h4>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    {item.date} • {item.calories} kcal
+                  </div>
+                </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontWeight: '700', color: 'var(--primary)' }}>{item.calories} kcal</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--secondary)' }}>Score: {item.healthScore}</div>
+                <span style={{ 
+                  backgroundColor: `${item.statusColor}22`, 
+                  color: item.statusColor,
+                  padding: '0.3rem 0.8rem',
+                  borderRadius: '100px',
+                  fontSize: '0.8rem',
+                  fontWeight: '700'
+                }}>
+                  {item.status}
+                </span>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)', maxWidth: '200px' }}>
+                  {item.recommendation}
+                </div>
               </div>
             </div>
           ))
